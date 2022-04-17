@@ -1,13 +1,18 @@
 package autoreply
 
 import (
+	"fmt"
 	"github.com/Mrs4s/MiraiGo/client"
 	"github.com/Mrs4s/MiraiGo/message"
-	_ "github.com/spf13/viper"
+	"github.com/fsnotify/fsnotify"
+	"github.com/sirupsen/logrus"
+	"github.com/spf13/viper"
+
 	"github.com/youtiao223/bot/bot"
 	"github.com/youtiao223/bot/config"
 	"github.com/youtiao223/bot/utils"
-	"gopkg.in/yaml.v2"
+	"os"
+
 	"sync"
 )
 
@@ -22,6 +27,8 @@ var tem map[string]string
 type ar struct {
 }
 
+var ArConfig *config.Config
+
 func (a *ar) MiraiGoModule() bot.ModuleInfo {
 	return bot.ModuleInfo{
 		ID:       "youtiao223.autoreply",
@@ -35,12 +42,8 @@ func (a *ar) Init() {
 	if path == "" {
 		path = "./autoreply.yaml"
 	}
-
-	bytes := utils.ReadFile(path)
-	err := yaml.Unmarshal(bytes, &tem)
-	if err != nil {
-		logger.WithError(err).Errorf("unable to read config file in %s", path)
-	}
+	tem = make(map[string]string)
+	initArConfig(path)
 }
 
 func (a *ar) PostInit() {
@@ -79,4 +82,33 @@ func autoreply(in string) string {
 		return "不好意思,我听不懂"
 	}
 	return out
+}
+
+// 读取 ar 的配置文件
+func initArConfig(path string) {
+	ArConfig = &config.Config{
+		Viper: viper.New(),
+	}
+
+	configFile, _ := os.Open(path)
+
+	ArConfig.SetConfigFile(path)
+	err := ArConfig.ReadConfig(configFile)
+
+	if err != nil {
+		logrus.WithField("config", "ArConfig").WithError(err).Panicf("unable to read autoreply config")
+	}
+
+	for _, s := range ArConfig.AllKeys() {
+		tem[s] = ArConfig.GetString(s)
+	}
+
+	// 热更新配置文件
+	ArConfig.OnConfigChange(func(in fsnotify.Event) {
+		fmt.Println("Config file changed:", in.Name)
+		for _, s := range ArConfig.AllKeys() {
+			tem[s] = ArConfig.GetString(s)
+		}
+	})
+	ArConfig.WatchConfig()
 }
