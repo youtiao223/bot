@@ -8,6 +8,7 @@ import (
 	"github.com/youtiao223/bot/config"
 	"github.com/youtiao223/bot/utils"
 
+	_ "github.com/youtiao223/bot/modules/autoreply"
 	_ "github.com/youtiao223/bot/modules/logging"
 )
 

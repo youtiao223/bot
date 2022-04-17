@@ -1,0 +1,17 @@
+# modules/autoreply 下的自动回复文本配置
+'你是谁': '我是你爹'
+
+# 单行文本
+hello: world
+
+# 包含空格
+'whats your name': 'My name is robot'
+
+# 多行文本
+'coffee': |
+  ┌───┐
+  │ ██  ├╮
+  │ 拿铁  ├╯
+  │ ██  │
+  ╰───╯
+ 
