@@ -7,6 +7,7 @@ import (
 	"github.com/fsnotify/fsnotify"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
+	"strings"
 
 	"github.com/youtiao223/bot/bot"
 	"github.com/youtiao223/bot/config"
@@ -37,6 +38,7 @@ func (a *ar) MiraiGoModule() bot.ModuleInfo {
 }
 
 func (a *ar) Init() {
+	// 从配置文件里读取自动回复消息内容
 	path := config.GlobalConfig.GetString("logiase.autoreply.path")
 
 	if path == "" {
@@ -51,7 +53,11 @@ func (a *ar) PostInit() {
 
 func (a *ar) Serve(b *bot.Bot) {
 	b.OnGroupMessage(func(c *client.QQClient, msg *message.GroupMessage) {
-		out := autoreply(msg.ToString())
+		hasPrefix, data := checkPrefixAndGetData(msg.ToString())
+		if !hasPrefix {
+			return
+		}
+		out := autoreply(data)
 		if out == "" {
 			return
 		}
@@ -111,4 +117,17 @@ func initArConfig(path string) {
 		}
 	})
 	ArConfig.WatchConfig()
+}
+
+func checkPrefixAndGetData(msg string) (bool, string) {
+	name := config.GlobalConfig.GetString("bot.name")
+	var prefix = "@" + name
+
+	hasPrefix := strings.HasPrefix(msg, prefix)
+
+	var data = ""
+	if hasPrefix {
+		data = msg[len(prefix):]
+	}
+	return hasPrefix, strings.TrimSpace(data)
 }

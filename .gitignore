@@ -4,5 +4,7 @@ application.yaml
 device.json
 
 logs/
+test/
+
 
 *.exe
