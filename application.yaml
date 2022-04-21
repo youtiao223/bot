@@ -1,0 +1,7 @@
+bot:
+  # common qrcode
+  loginmethod: common
+  account: "3235466718"
+  password: "860AIBS3BQxo"
+  # 昵称
+  name: "机器人阿伟"
