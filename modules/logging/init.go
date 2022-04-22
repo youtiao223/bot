@@ -1,45 +1,44 @@
-package modules
+package logging
 
 import (
-	"github.com/youtiao223/bot/bot"
 	"sync"
+
+	"qqBot/bot"
 )
 
-// module.go 样例写法
-
-// 注册 module 实例
 func init() {
+	instance = &logging{}
 	bot.RegisterModule(instance)
 }
 
-var instance = &sample{}
+type logging struct {
+}
 
-type sample struct{}
-
-func (s sample) MiraiGoModule() bot.ModuleInfo {
+func (m *logging) MiraiGoModule() bot.ModuleInfo {
 	return bot.ModuleInfo{
-		ID:       "",
+		ID:       "internal.logging",
 		Instance: instance,
 	}
 }
 
-func (s sample) Init() {
+func (m *logging) Init() {
 	// 初始化过程
 	// 在此处可以进行 Module 的初始化配置
 	// 如配置读取
 }
 
-func (s sample) PostInit() {
+func (m *logging) PostInit() {
 	// 第二次初始化
 	// 再次过程中可以进行跨Module的动作
 	// 如通用数据库等等
 }
 
-func (s sample) Serve(bot *bot.Bot) {
+func (m *logging) Serve(b *bot.Bot) {
 	// 注册服务函数部分
+	registerLog(b)
 }
 
-func (s sample) Start(bot *bot.Bot) {
+func (m *logging) Start(b *bot.Bot) {
 	// 此函数会新开携程进行调用
 	// ```go
 	// 		go exampleModule.Start()
@@ -49,7 +48,7 @@ func (s sample) Start(bot *bot.Bot) {
 	// 如http服务器等等
 }
 
-func (s sample) Stop(bot *bot.Bot, wg *sync.WaitGroup) {
+func (m *logging) Stop(b *bot.Bot, wg *sync.WaitGroup) {
 	// 别忘了解锁
 	defer wg.Done()
 	// 结束部分
@@ -57,3 +56,5 @@ func (s sample) Stop(bot *bot.Bot, wg *sync.WaitGroup) {
 	// 即将退出
 	// 在此处应该释放相应的资源或者对状态进行保存
 }
+
+var instance *logging

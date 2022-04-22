@@ -2,9 +2,9 @@ package lib
 
 import (
 	"fmt"
-	"github.com/youtiao223/bot/bot"
-	"github.com/youtiao223/bot/config"
 	_ "golang.org/x/mobile/bind"
+	"qqBot/bot"
+	"qqBot/config"
 )
 
 func init() {

@@ -18,8 +18,8 @@ import (
 
 	"github.com/Mrs4s/MiraiGo/client"
 	"github.com/sirupsen/logrus"
-	"github.com/youtiao223/bot/config"
-	"github.com/youtiao223/bot/utils"
+	"qqBot/config"
+	"qqBot/utils"
 )
 
 // Bot 全局 Bot

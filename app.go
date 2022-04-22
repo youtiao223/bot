@@ -4,12 +4,12 @@ import (
 	"os"
 	"os/signal"
 
-	"github.com/youtiao223/bot/bot"
-	"github.com/youtiao223/bot/config"
-	"github.com/youtiao223/bot/utils"
+	"qqBot/bot"
+	"qqBot/config"
+	"qqBot/utils"
 
-	_ "github.com/youtiao223/bot/modules/autoreply"
-	_ "github.com/youtiao223/bot/modules/logging"
+	_ "qqBot/modules/autoreply"
+	_ "qqBot/modules/logging"
 )
 
 func init() {

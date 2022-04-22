@@ -1,4 +1,4 @@
-module github.com/youtiao223/bot
+module qqBot
 
 go 1.17
 

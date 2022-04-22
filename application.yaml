@@ -5,3 +5,7 @@ bot:
   password: "860AIBS3BQxo"
   # 昵称
   name: "机器人阿伟"
+
+autoreply:
+  joke:
+    url: "https://api.apishop.net/common/joke/getJokesByRandom?apiKey=4BXLzibffb55a5fcd29f07a8f8504f41865a4e458d7ee34&pageSize=1"
